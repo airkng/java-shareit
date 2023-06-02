@@ -23,5 +23,4 @@ public class User {
     @NotNull
     private String name;
 
-    private HashSet<Item> items;
 }

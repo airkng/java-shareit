@@ -14,4 +14,6 @@ public interface UserService {
     User replace(User user, Integer userId);
 
     void delete(Integer userId);
+
+    boolean contains(Integer userId);
 }

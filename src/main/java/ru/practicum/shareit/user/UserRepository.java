@@ -74,4 +74,8 @@ public class UserRepository {
         emails.add(newVal);
         return true;
     }
+
+    public boolean contains(Integer userId) {
+        return users.containsKey(userId);
+    }
 }
