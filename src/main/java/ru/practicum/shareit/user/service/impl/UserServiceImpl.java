@@ -49,4 +49,9 @@ public class UserServiceImpl implements UserService {
     public void delete(Integer userId) {
         userRepository.delete(userId);
     }
+
+    @Override
+    public boolean contains(Integer userId) {
+        return userRepository.contains(userId);
+    }
 }
