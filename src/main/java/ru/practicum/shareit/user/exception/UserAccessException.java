@@ -5,7 +5,7 @@ public class UserAccessException extends RuntimeException {
         super();
     }
 
-    public UserAccessException(String message) {
+    public UserAccessException(final String message) {
         super(message);
     }
 }

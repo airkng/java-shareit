@@ -23,7 +23,7 @@ public class UserController {
     private final UserMapper mapper;
 
     @GetMapping("/{userId}")
-    public UserDto getUser(@PathVariable(value = "userId") Integer userId) {
+    public UserDto getUser(@PathVariable(value = "userId") final Integer userId) {
         return mapper.toUserDto(userService.get(userId));
     }
 
@@ -35,21 +35,21 @@ public class UserController {
     }
 
     @PostMapping
-    public UserDto createUser(@RequestBody @Valid UserCreationDto userDto) {
+    public UserDto createUser(@RequestBody @Valid final UserCreationDto userDto) {
         User user = mapper.toUser(userDto);
         return mapper.toUserDto(userService.create(user));
     }
 
     @PatchMapping("/{userId}")
-    public UserDto replaceUser(@PathVariable("userId") Integer userId,
-                               @RequestBody UserCreationDto userDto) {
+    public UserDto replaceUser(@PathVariable("userId") final Integer userId,
+                               @RequestBody final UserCreationDto userDto) {
         userDto.setId(userId);
         User user = mapper.toUser(userDto);
         return mapper.toUserDto(userService.replace(user, userId));
     }
 
     @DeleteMapping("/{userId}")
-    public void deleteUser(@PathVariable("userId") Integer userId) {
+    public void deleteUser(@PathVariable("userId") final Integer userId) {
         userService.delete(userId);
     }
 }

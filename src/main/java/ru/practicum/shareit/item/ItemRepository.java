@@ -17,22 +17,22 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ItemRepository {
     private final UserRepository userRepository;
-    private static Integer ITEM_ID = 1;
+    private static Integer itemIdCount = 1;
     private final HashMap<Integer, Item> items = new HashMap<>();
 
-    public Optional<Item> get(Integer itemId, Integer userId) {
+    public Optional<Item> get(final Integer itemId, final Integer userId) {
         return Optional.of(items.get(itemId));
     }
 
-    public Item create(Item item) {
-        item.setId(ITEM_ID);
+    public Item create(final Item item) {
+        item.setId(itemIdCount);
         item.setOwner(userRepository.get(item.getOwner().getId()).get());
-        items.put(ITEM_ID, item);
-        ITEM_ID++;
+        items.put(itemIdCount, item);
+        itemIdCount++;
         return item;
     }
 
-    public Item update(Item item) {
+    public Item update(final Item item) {
         if (items.containsKey(item.getId())) {
             Item oldItem = items.get(item.getId());
             if (!oldItem.getOwner().getId().equals(item.getOwner().getId())) {
@@ -59,12 +59,12 @@ public class ItemRepository {
         return Optional.of(new ArrayList<>(items.values()));
     }
 
-    public List<Item> search(String text) {
+    public List<Item> search(final String text) {
         return items.values().stream()
                 .filter(
-                        item -> item.getAvailable() &&
-                                (item.getDescription().toLowerCase().contains(text.toLowerCase()) ||
-                                 item.getName().toLowerCase().contains(text.toLowerCase()))
+                        item -> item.getAvailable()
+                                && (item.getDescription().toLowerCase().contains(text.toLowerCase())
+                                || item.getName().toLowerCase().contains(text.toLowerCase()))
                 )
                 .collect(Collectors.toList());
     }

@@ -19,37 +19,37 @@ public class ItemController {
     private final ItemMapper mapper;
 
     @GetMapping("/{itemId}")
-    public ItemDto getItem(@PathVariable Integer itemId,
-                           @RequestHeader("X-Sharer-User-Id") Integer userId) {
+    public ItemDto getItem(@PathVariable final Integer itemId,
+                           @RequestHeader("X-Sharer-User-Id") final Integer userId) {
         return mapper.toItemDto(itemService.get(itemId, userId));
     }
 
     @GetMapping
-    public List<ItemDto> getAll(@RequestHeader("X-Sharer-User-Id") Integer userId) {
+    public List<ItemDto> getAll(@RequestHeader("X-Sharer-User-Id") final Integer userId) {
         return itemService.getAll(userId).stream()
                 .map(mapper::toItemDto)
                 .collect(Collectors.toList());
     }
 
     @GetMapping("/search")
-    public List<ItemDto> searchText(@RequestParam(value = "text") String text) {
+    public List<ItemDto> searchText(@RequestParam(value = "text") final String text) {
         return itemService.search(text).stream()
                 .map(mapper::toItemDto)
                 .collect(Collectors.toList());
     }
 
     @PostMapping
-    public ItemDto createItem(@RequestBody @Valid ItemCreationDto itemCreationDto,
-                              @RequestHeader("X-Sharer-User-Id") Integer userId) {
+    public ItemDto createItem(@RequestBody @Valid final ItemCreationDto itemCreationDto,
+                              @RequestHeader("X-Sharer-User-Id") final Integer userId) {
         itemCreationDto.setUserId(userId);
         Item item = mapper.toItem(itemCreationDto);
         return mapper.toItemDto(itemService.create(item));
     }
 
     @PatchMapping("/{itemId}")
-    public ItemDto replaceItem(@PathVariable("itemId") Integer itemId,
-                               @RequestBody ItemCreationDto itemCreationDto,
-                               @RequestHeader("X-Sharer-User-Id") Integer userId) {
+    public ItemDto replaceItem(@PathVariable("itemId") final Integer itemId,
+                               @RequestBody final ItemCreationDto itemCreationDto,
+                               @RequestHeader("X-Sharer-User-Id") final Integer userId) {
         itemCreationDto.setUserId(userId);
         Item item = mapper.toItem(itemCreationDto);
         item.setId(itemId);

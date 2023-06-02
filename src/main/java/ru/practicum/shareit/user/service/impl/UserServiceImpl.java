@@ -46,12 +46,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void delete(Integer userId) {
+    public void delete(final Integer userId) {
         userRepository.delete(userId);
     }
 
     @Override
-    public boolean contains(Integer userId) {
+    public boolean contains(final Integer userId) {
         return userRepository.contains(userId);
     }
 }
