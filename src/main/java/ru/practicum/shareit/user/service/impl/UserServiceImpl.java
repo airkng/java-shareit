@@ -16,10 +16,10 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
-    public User get(Integer userId) {
+    public User get(final Integer userId) {
         Optional<User> user = userRepository.get(userId);
 
-        if(user.isEmpty()) {
+        if (user.isEmpty()) {
             throw new UserNotFoundException(String.format("User with %d user id not found", userId));
         }
         return user.get();
@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getAll() {
         Optional<List<User>> users = userRepository.getAll();
-        if(users.isEmpty()) {
+        if (users.isEmpty()) {
             return List.of();
         } else {
             return users.get();
@@ -36,12 +36,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User create(User user) {
+    public User create(final User user) {
         return userRepository.create(user);
     }
 
     @Override
-    public User replace(User user, Integer userId) {
+    public User replace(final User user, final Integer userId) {
         return userRepository.replace(user, userId);
     }
 

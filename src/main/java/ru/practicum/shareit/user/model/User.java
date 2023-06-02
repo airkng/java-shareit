@@ -1,11 +1,12 @@
 package ru.practicum.shareit.user.model;
 
-import lombok.*;
-import ru.practicum.shareit.item.model.Item;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
-import java.util.HashSet;
 
 /**
  * TODO Sprint add-controllers.
