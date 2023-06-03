@@ -1,4 +1,4 @@
-package ru.practicum.shareit.user.exception;
+package ru.practicum.shareit.exceptions;
 
 public class UserAccessException extends RuntimeException {
     public UserAccessException() {

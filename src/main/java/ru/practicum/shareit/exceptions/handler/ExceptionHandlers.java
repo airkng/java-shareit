@@ -1,13 +1,12 @@
-package ru.practicum.shareit;
+package ru.practicum.shareit.exceptions.handler;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import ru.practicum.shareit.item.exception.ItemNotFoundException;
-import ru.practicum.shareit.user.exception.EmailAlreadyExist;
-import ru.practicum.shareit.user.exception.UserAccessException;
-import ru.practicum.shareit.user.exception.UserNotFoundException;
+import ru.practicum.shareit.exceptions.EmailAlreadyExist;
+import ru.practicum.shareit.exceptions.NotFoundException;
+import ru.practicum.shareit.exceptions.UserAccessException;
 
 import java.util.Map;
 
@@ -19,12 +18,7 @@ public class ExceptionHandlers {
     }
 
     @ExceptionHandler
-    public ResponseEntity<Map<String, String>> handleUserNotFoundException(final UserNotFoundException e) {
-        return new ResponseEntity<>(Map.of("Exception: ", e.getMessage()), HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler
-    public ResponseEntity<Map<String, String>> handleItemNotFoundException(final ItemNotFoundException e) {
+    public ResponseEntity<Map<String, String>> handleUserNotFoundException(final NotFoundException e) {
         return new ResponseEntity<>(Map.of("Exception: ", e.getMessage()), HttpStatus.NOT_FOUND);
     }
 
