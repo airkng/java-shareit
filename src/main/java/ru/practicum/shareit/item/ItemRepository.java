@@ -68,6 +68,7 @@ public class ItemRepository {
                 )
                 .collect(Collectors.toList());
     }
+
     private static void increaseItemId() {
         itemIdCount++;
     }
