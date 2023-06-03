@@ -28,7 +28,7 @@ public class ItemRepository {
         item.setId(itemIdCount);
         item.setOwner(userRepository.get(item.getOwner().getId()).get());
         items.put(itemIdCount, item);
-        itemIdCount++;
+        increaseItemId();
         return item;
     }
 
@@ -67,5 +67,8 @@ public class ItemRepository {
                                 || item.getName().toLowerCase().contains(text.toLowerCase()))
                 )
                 .collect(Collectors.toList());
+    }
+    private static void increaseItemId() {
+        itemIdCount++;
     }
 }

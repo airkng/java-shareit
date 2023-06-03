@@ -30,7 +30,7 @@ public class UserRepository {
         user.setId(userIdCount);
         users.put(userIdCount, user);
         emails.add(user.getEmail());
-        userIdCount++;
+        increaseUserId();
         return user;
     }
 
@@ -60,6 +60,10 @@ public class UserRepository {
 
     }
 
+    public boolean contains(final Integer userId) {
+        return users.containsKey(userId);
+    }
+
     private boolean checkEmail(final String email) {
         if (emails.contains(email)) {
             throw new EmailAlreadyExist(String.format("%s email already exists", email));
@@ -75,7 +79,7 @@ public class UserRepository {
         return true;
     }
 
-    public boolean contains(final Integer userId) {
-        return users.containsKey(userId);
+    private static void increaseUserId() {
+        userIdCount++;
     }
 }
