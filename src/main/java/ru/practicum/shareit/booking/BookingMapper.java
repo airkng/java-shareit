@@ -23,6 +23,7 @@ public class BookingMapper {
                 .item(booking.getItem())
                 .build();
     }
+
     public BookingItemDto toItemBookingDto(final Booking booking) {
         return BookingItemDto.builder()
                 .id(booking.getBookingId())

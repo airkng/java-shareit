@@ -153,12 +153,10 @@ public class BookingServiceImpl implements BookingService {
         return bookings.stream().map(mapper::toBookingDto).collect(Collectors.toList());
     }
 
-
     private static State convertToEnum(final String state) {
         try {
             return State.valueOf(state);
         } catch (Exception e) {
-            //тут выдает ошибку
             throw new StateNotSupportException("Unknown state: " + state);
         }
     }
