@@ -13,9 +13,9 @@ import java.util.stream.Collectors;
 @Repository
 @RequiredArgsConstructor
 public class ItemRepository {
-    private final HashMap<Integer, Item> items = new HashMap<>();
+    private final HashMap<Long, Item> items = new HashMap<>();
 
-    public Optional<Item> get(final Integer itemId, final Integer userId) {
+    public Optional<Item> get(final Long itemId, final Long userId) {
         return Optional.ofNullable(items.get(itemId));
     }
 

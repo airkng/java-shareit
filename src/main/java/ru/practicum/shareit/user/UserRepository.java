@@ -9,11 +9,11 @@ import java.util.*;
 @Repository
 public class UserRepository {
 
-    private final HashMap<Integer, User> users = new HashMap<>();
+    private final HashMap<Long, User> users = new HashMap<>();
 
     private final HashSet<String> emails = new HashSet<>();
 
-    public Optional<User> get(final Integer userId) {
+    public Optional<User> get(final Long userId) {
         return Optional.ofNullable(users.get(userId));
     }
 
@@ -28,18 +28,18 @@ public class UserRepository {
         return user;
     }
 
-    public User update(final User user, final Integer userId) {
+    public User update(final User user, final Long userId) {
         users.replace(userId, user);
         return user;
     }
 
-    public void delete(final Integer userId) {
+    public void delete(final Long userId) {
         User user = users.remove(userId);
         emails.remove(user.getEmail());
 
     }
 
-    public boolean contains(final Integer userId) {
+    public boolean contains(final Long userId) {
         return users.containsKey(userId);
     }
 
