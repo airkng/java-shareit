@@ -45,7 +45,6 @@ public class BookingServiceImpl implements BookingService {
             throw new NotAvailableException("Item is not available");
         }
         booking.setBooker(booker);
-        booking.setOwner(owner);
         booking.setItem(item);
         booking.setStatus(BookingStatus.WAITING);
 
@@ -63,7 +62,7 @@ public class BookingServiceImpl implements BookingService {
         Booking booking = bookingRepository.findById(bookingId).orElseThrow(() -> {
                     throw new NotFoundException(String.format("Booking with id = %d not found", bookingId));
                 });
-        if (!booking.getOwner().getId().equals(userId)) {
+        if (!booking.getItem().getOwner().getId().equals(userId)) {
             throw new NotFoundException("You haven't access to this action");
         }
         if (booking.getStatus().equals(BookingStatus.APPROVED)) {
@@ -82,7 +81,7 @@ public class BookingServiceImpl implements BookingService {
         if (userRepository.existsById(userId)) {
             try {
                 return mapper.toBookingDto(bookingRepository.findById(bookingId).filter((booking) -> {
-                    if (booking.getBooker().getId().equals(userId) || booking.getOwner().getId().equals(userId)) {
+                    if (booking.getBooker().getId().equals(userId) || booking.getItem().getOwner().getId().equals(userId)) {
                         return true;
                     } else {
                         throw new NotFoundException("Invalid user with id");
@@ -106,49 +105,48 @@ public class BookingServiceImpl implements BookingService {
         List<Booking> bookings = new ArrayList<>();
         Sort sort = Sort.by(Sort.Direction.DESC, "start");
         LocalDateTime now = LocalDateTime.now();
-        switch (convertToEnum(state)) {
+        if (isOwner) {
+            switch (convertToEnum(state)) {
+                case ALL:
+                    bookings = bookingRepository.findAllByItemOwnerId(userId, sort);
+                    break;
+                case CURRENT:
+                    bookings = bookingRepository.findAllByItemOwnerIdAndStartBeforeAndEndAfter(userId, now, now, sort);
+                    break;
+                case PAST:
+                    bookings = bookingRepository.findAllByItemOwnerIdAndEndBefore(userId, now, sort);
+                    break;
+                case FUTURE:
+                    bookings = bookingRepository.findAllByItemOwnerIdAndStartAfter(userId, now, sort);
+                    break;
+                case WAITING:
+                    bookings = bookingRepository.findAllByItemOwnerIdAndStatus(userId, BookingStatus.WAITING, sort);
+                    break;
+                case REJECTED:
+                    bookings = bookingRepository.findAllByItemOwnerIdAndStatus(userId, BookingStatus.REJECTED, sort);
+                    break;
+            }
+        } else {
+            switch (convertToEnum(state)) {
             case ALL:
-                if (isOwner) {
-                    bookings = bookingRepository.findAllByOwnerId(userId, sort);
-                } else {
-                    bookings = bookingRepository.findAllByBookerId(userId, sort);
-                }
+                bookings = bookingRepository.findAllByBookerId(userId, sort);
                 break;
             case CURRENT:
-                if (isOwner) {
-                    bookings = bookingRepository.findAllByOwnerIdAndStartBeforeAndEndAfter(userId, now, now, sort);
-                } else {
-                    bookings = bookingRepository.findAllByBookerIdAndStartBeforeAndEndAfter(userId, now, now, sort);
-                }
+                bookings = bookingRepository.findAllByBookerIdAndStartBeforeAndEndAfter(userId, now, now, sort);
                 break;
             case PAST:
-                if (isOwner) {
-                    bookings = bookingRepository.findAllByOwnerIdAndEndBefore(userId, now, sort);
-                } else {
-                    bookings = bookingRepository.findAllByBookerIdAndEndBefore(userId, now, sort);
-                }
+                bookings = bookingRepository.findAllByBookerIdAndEndBefore(userId, now, sort);
                 break;
             case FUTURE:
-                if (isOwner) {
-                    bookings = bookingRepository.findAllByOwnerIdAndStartAfter(userId, now, sort);
-                } else {
-                    bookings = bookingRepository.findAllByBookerIdAndStartAfter(userId, now, sort);
-                }
+                bookings = bookingRepository.findAllByBookerIdAndStartAfter(userId, now, sort);
                 break;
             case WAITING:
-                if (isOwner) {
-                    bookings = bookingRepository.findAllByOwnerIdAndStatus(userId, BookingStatus.WAITING, sort);
-                } else {
-                    bookings = bookingRepository.findAllByBookerIdAndStatus(userId, BookingStatus.WAITING, sort);
-                }
+                bookings = bookingRepository.findAllByBookerIdAndStatus(userId, BookingStatus.WAITING, sort);
                 break;
             case REJECTED:
-                if (isOwner) {
-                    bookings = bookingRepository.findAllByOwnerIdAndStatus(userId, BookingStatus.REJECTED, sort);
-                } else {
-                    bookings = bookingRepository.findAllByBookerIdAndStatus(userId, BookingStatus.REJECTED, sort);
-                }
+                bookings = bookingRepository.findAllByBookerIdAndStatus(userId, BookingStatus.REJECTED, sort);
                 break;
+            }
         }
         return bookings.stream().map(mapper::toBookingDto).collect(Collectors.toList());
     }

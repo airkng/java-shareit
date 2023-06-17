@@ -34,10 +34,6 @@ public class Booking {
     @JoinColumn(name = "booker_id")
     private User booker;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "owner_id", nullable = false)
-    private User owner;
-
     @ManyToOne
     @JoinColumn(name = "item_id", nullable = false)
     private Item item;

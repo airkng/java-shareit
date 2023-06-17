@@ -3,10 +3,7 @@ package ru.practicum.shareit.item;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import ru.practicum.shareit.booking.BookingItemDto;
-import ru.practicum.shareit.booking.BookingMapper;
-import ru.practicum.shareit.booking.BookingRepository;
-import ru.practicum.shareit.booking.BookingStatus;
+import ru.practicum.shareit.booking.*;
 import ru.practicum.shareit.exceptions.NotAvailableException;
 import ru.practicum.shareit.exceptions.NotFoundException;
 import ru.practicum.shareit.exceptions.UserAccessException;
@@ -57,20 +54,21 @@ public class ItemServiceImpl implements ItemService {
 
     private ItemDto setBookings(final ItemDto itemDto, final Long userId) {
         if (itemDto.getOwner().getId().equals(userId)) {
-            itemDto.setLastBooking(bookingRepository
-                    .findByItemId(itemDto.getId(), Sort.by(Sort.Direction.DESC, "start"))
-                    .stream()
-                    .filter(booking -> booking.getStart().isBefore(LocalDateTime.now()))
+            var bookings = bookingRepository.findByItemId(itemDto.getId(), Sort.by(Sort.Direction.DESC, "start"));
+
+            itemDto.setLastBooking(bookings.stream()
+                    .filter((booking) -> booking.getStart().isBefore(LocalDateTime.now()))
+                    .max(Comparator.comparing(Booking::getEnd))
                     .map(bookingMapper::toItemBookingDto)
-                    .max(Comparator.comparing(BookingItemDto::getEnd))
+                    .orElse(null)
+            );
+
+            itemDto.setNextBooking(bookings.stream()
+                    .filter(booking -> !booking.getStatus().equals(BookingStatus.REJECTED) && booking.getStart().isAfter(LocalDateTime.now()))
+                    .map(bookingMapper::toItemBookingDto)
+                    //либо max
+                    .min(Comparator.comparing(BookingItemDto::getStart))
                     .orElse(null));
-            itemDto.setNextBooking(bookingRepository
-                    .findByItemId(itemDto.getId(), Sort.by(Sort.Direction.ASC, "start"))
-                    .stream()
-                    .filter(booking -> !booking.getStatus().equals(BookingStatus.REJECTED))
-                    .map(bookingMapper::toItemBookingDto)
-                    .filter(booking -> booking.getStart().isAfter(LocalDateTime.now()))
-                    .findFirst().orElse(null));
             return itemDto;
         }
         return itemDto;
@@ -94,7 +92,7 @@ public class ItemServiceImpl implements ItemService {
         if (text.isBlank() || text.isEmpty()) {
             return List.of();
         }
-        return itemRepository.findByNameOrDescriptionAvailable(text).stream()
+        return itemRepository.searchByText(text).stream()
                 .map(mapper::toItemDto)
                 .collect(Collectors.toList());
     }

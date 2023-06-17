@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS bookings (
     end_time timestamp,
     status VARCHAR(50),
     item_id BIGINT REFERENCES items(item_id),
-    owner_id BIGINT REFERENCES users(user_id),
+    --owner_id BIGINT REFERENCES users(user_id),
     booker_id BIGINT REFERENCES users(user_id)
 );
 
