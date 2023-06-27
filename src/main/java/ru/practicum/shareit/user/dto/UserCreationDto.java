@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 @Data
 @Builder(toBuilder = true)
 public class UserCreationDto {
-    private Integer id;
+    private Long id;
 
     @Email
     @NotNull

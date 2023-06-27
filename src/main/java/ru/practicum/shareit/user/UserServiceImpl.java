@@ -14,13 +14,13 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    private static Integer userIdCount = 1;
-    private final UserRepository userRepository;
+    //private static Long userIdCount = 1L;
+    private final UserRepositoryDb userRepository;
     private final UserMapper mapper;
 
     @Override
-    public UserDto get(final Integer userId) {
-        return mapper.toUserDto(userRepository.get(userId).orElseThrow(() -> {
+    public UserDto get(final Long userId) {
+        return mapper.toUserDto(userRepository.findById(userId).orElseThrow(() -> {
             throw new NotFoundException(String.format("User with %d user id not found", userId));
         }));
 
@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> getAll() {
-        return userRepository.getAll().stream()
+        return userRepository.findAll().stream()
                 .map(mapper::toUserDto)
                 .collect(Collectors.toList());
     }
@@ -36,45 +36,41 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto create(final UserCreationDto userCreationDto) {
         User user = mapper.toUser(userCreationDto);
-        user.setId(userIdCount);
+        /*user.setId(userIdCount);
         userRepository.checkEmail(user.getEmail());
-        increaseUserId();
-        return mapper.toUserDto(userRepository.create(user));
+        increaseUserId();*/
+        return mapper.toUserDto(userRepository.save(user));
     }
 
     @Override
-    public UserDto update(final UserCreationDto userCreationDto, final Integer userId) {
+    public UserDto update(final UserCreationDto userCreationDto, final Long userId) {
         User userInfo = mapper.toUser(userCreationDto);
-        Optional<User> userOptional = userRepository.get(userId);
+        Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isPresent()) {
             User oldUser = userOptional.get();
             if (userInfo.getName() != null) {
                 oldUser.setName(userInfo.getName());
             }
             if (userInfo.getEmail() != null) {
-                String oldEmail = oldUser.getEmail();
-                if (!oldEmail.equals(userInfo.getEmail())) {
-                    userRepository.updateEmail(oldEmail, userInfo.getEmail());
-                    oldUser.setEmail(userInfo.getEmail());
-                }
+                oldUser.setEmail(userInfo.getEmail());
             }
-            return mapper.toUserDto(userRepository.update(oldUser, userId));
+            return mapper.toUserDto(userRepository.save(oldUser));
         } else {
             throw new NotFoundException(String.format("user id %d not found", userId));
         }
     }
 
     @Override
-    public void delete(final Integer userId) {
-        userRepository.delete(userId);
+    public void delete(final Long userId) {
+        userRepository.deleteById(userId);
     }
 
     @Override
-    public boolean contains(final Integer userId) {
-        return userRepository.contains(userId);
+    public boolean contains(final Long userId) {
+        return userRepository.existsById(userId);
     }
 
-    private static void increaseUserId() {
+    /*private static void increaseUserId() {
         userIdCount++;
-    }
+    }*/
 }

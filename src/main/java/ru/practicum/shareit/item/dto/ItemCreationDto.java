@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ItemCreationDto {
 
-    private Integer userId;
+    private Long userId;
 
     @NotBlank
     private String name;
@@ -26,4 +26,6 @@ public class ItemCreationDto {
     @NotNull
     @JsonProperty(value = "available")
     private Boolean available;
+
+    private Long requestId;
 }
