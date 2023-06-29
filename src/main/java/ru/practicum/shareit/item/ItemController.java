@@ -1,6 +1,7 @@
 package ru.practicum.shareit.item;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.item.comments.CommentDto;
 import ru.practicum.shareit.item.dto.ItemCreationDto;
@@ -12,6 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/items")
+@Validated
 public class ItemController {
     private final ItemService itemService;
 
@@ -22,13 +24,17 @@ public class ItemController {
     }
 
     @GetMapping
-    public List<ItemDto> getAll(@RequestHeader("X-Sharer-User-Id") final Long userId) {
-        return itemService.getAll(userId);
+    public List<ItemDto> getAll(@RequestHeader("X-Sharer-User-Id") final Long userId,
+                                @RequestParam(defaultValue = "0") final int from,
+                                @RequestParam(defaultValue = "10") final int size) {
+        return itemService.getAll(userId, from, size);
     }
 
     @GetMapping("/search")
-    public List<ItemDto> searchText(@RequestParam(value = "text") final String text) {
-        return itemService.search(text);
+    public List<ItemDto> searchText(@RequestParam(value = "text") final String text,
+                                    @RequestParam(defaultValue = "0") final int from,
+                                    @RequestParam(defaultValue = "10") final int size) {
+        return itemService.search(text, from, size);
     }
 
     @PostMapping
@@ -47,8 +53,9 @@ public class ItemController {
     }
 
     @PostMapping("/{itemId}/comment")
-    public CommentDto addComment(@RequestHeader("X-Sharer-User-Id") Long id,
-                                 @PathVariable Long itemId, @Valid @RequestBody CommentDto commentDto) {
+    public CommentDto addComment(@RequestHeader("X-Sharer-User-Id") final Long id,
+                                 @PathVariable final Long itemId,
+                                 @Valid @RequestBody final CommentDto commentDto) {
         return itemService.addComment(id, itemId, commentDto);
     }
 

@@ -35,4 +35,14 @@ public class ItemMapper {
                 .request(itemCreationDto.getRequestId() != null ? requests.get(itemCreationDto.getRequestId()) : null)
                 .build();
     }
+
+    public ItemForRequest toItemForRequest(Item item) {
+        return ItemForRequest.builder()
+                .available(item.getAvailable())
+                .id(item.getId())
+                .requestId(item.getRequest().getRequestId())
+                .name(item.getName())
+                .description(item.getDescription())
+                .build();
+    }
 }

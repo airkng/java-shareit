@@ -4,21 +4,17 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.practicum.shareit.item.ItemForRequest;
 
-import java.sql.Timestamp;
-import java.util.List;
+import javax.validation.constraints.NotEmpty;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-public class ItemRequestDto {
-    private Long id;
 
+public class ItemRequestCreationDto {
+    @NotEmpty
     private String description;
 
-    private Timestamp created;
-
-    private List<ItemForRequest> items;
+   // private Timestamp created = Timestamp.valueOf(LocalDateTime.now());
 }
