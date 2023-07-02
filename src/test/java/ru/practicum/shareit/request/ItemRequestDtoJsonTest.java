@@ -3,7 +3,6 @@ package ru.practicum.shareit.request;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.util.StdDateFormat;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.json.JsonTest;
@@ -22,7 +21,7 @@ public class ItemRequestDtoJsonTest {
 
     ObjectMapper mapper = new ObjectMapper()
             .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-            //.setDateFormat(new StdDateFormat().withColonInTimeZone(true));
+    //.setDateFormat(new StdDateFormat().withColonInTimeZone(true));
 
 
     @Test
