@@ -17,7 +17,6 @@ import ru.practicum.shareit.item.comments.CommentDto;
 import ru.practicum.shareit.item.dto.ItemCreationDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 
-import javax.validation.ValidationException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -254,7 +253,7 @@ public class ItemControllerTest {
                 .thenReturn(ItemDto.builder().build());
 
         mockMvc.perform(MockMvcRequestBuilders.get("/items/{itemId}", 1L)
-                .header("X-Sharer-User-Id", 1L))
+                        .header("X-Sharer-User-Id", 1L))
                 .andExpect(status().isOk());
 
     }

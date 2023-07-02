@@ -22,7 +22,6 @@ import ru.practicum.shareit.user.dto.UserCreationDto;
 import ru.practicum.shareit.user.model.User;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -88,7 +87,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void addBooking_CorrectData_shouldReturnDto()  {
+    void addBooking_CorrectData_shouldReturnDto() {
         BookingCreationDto bookingEntryDto = BookingCreationDto.builder().itemId(item1.getId())
                 .start(LocalDateTime.now().minusHours(1))
                 .end(LocalDateTime.now())
@@ -250,9 +249,9 @@ class BookingServiceImplTest {
         assertThrows(StateNotSupportException.class, () -> bookingService.getAll(1L, "GAY", true, 0, 10));
         assertThrows(StateNotSupportException.class, () -> bookingService.getAll(1L, "NotGAY", false, 0, 10));
     }
-
-   /* @Test
-    void getAllBookingByStateRejected() throws ValidationException {
+    /*
+    @Test
+    void getAllBookingByStateRejected()  {
         bookingService.approveBooking(1L, 1L, true);
         bookingService.approveBooking(1L, 3L, false);
         List<BookingDto> testBookingStatusRejected = bookingService.getAllBookingByState(2L, "REJECTED", 0, 10);
@@ -261,7 +260,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void getAllBookingByStateCurrent() throws ValidationException {
+    void getAllBookingByStateCurrent()  {
         bookingService.approveBooking(1L, 1L, true);
         bookingService.approveBooking(1L, 3L, false);
         List<BookingDto> testBookingStatusCurrent = bookingService.getAllBookingByState(2L, "CURRENT", 0, 10);
@@ -270,7 +269,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void getAllBookingByStateAll() throws ValidationException {
+    void getAllBookingByStateAll()  {
         bookingService.approveBooking(1L, 1L, true);
         bookingService.approveBooking(1L, 3L, false);
         List<BookingDto> testBookingStatusAll = bookingService.getAllBookingByState(2L, "ALL", 0, 10);
@@ -308,7 +307,7 @@ class BookingServiceImplTest {
         List<BookingDto> testBookingStatusPast = bookingService.getAllBookingByState(2L, "PAST", 0, 10);
         assertEquals(1, testBookingStatusPast.size());
         assertEquals(2L, testBookingStatusPast.get(0).getId());
-    }*/
+    }
 /*
     @Test
     void getAllBookingByStateFuture() throws ValidationException {

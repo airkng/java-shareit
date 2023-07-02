@@ -37,7 +37,7 @@ public class BookingRepositoryTest {
     private  Item i2;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         u1 = User.builder()
                 .name("TestUser")
                 .email("test@mail.com")
@@ -95,20 +95,8 @@ public class BookingRepositoryTest {
         entityManager.persist(b3);
     }
 
-     void loadDataToDb() {
-        entityManager.persist(u1);
-        entityManager.persist(u2);
-        entityManager.persist(i1);
-        entityManager.persist(i2);
-        entityManager.persist(b1);
-        entityManager.persist(b2);
-        entityManager.persist(b3);
-    }
-
-
     @Test
     public void testFindAllByBookerId_CorrectValues_ShouldReturnList() {
-       // loadDataToDb();
         Pageable pageable = PageRequest.of(0, 10);
         Page<Booking> resultPage = bookingRepository.findAllByBookerId(u1.getId(), pageable);
 
@@ -119,7 +107,6 @@ public class BookingRepositoryTest {
 
     @Test
     public void testFindAllByBookerIdAndStatus_CorrectValues_ShouldReturnList() {
-        //loadDataToDb();
         BookingStatus status = BookingStatus.WAITING;
         Pageable pageable = PageRequest.of(0, 10);
 
@@ -132,8 +119,6 @@ public class BookingRepositoryTest {
 
     @Test
     void testFindAllByBookerId_NonExistsUser_ShouldReturnEmptyList() {
-        //loadDataToDb();
-
         Pageable pageable = PageRequest.of(0, 10);
         Page<Booking> resultPage = bookingRepository.findAllByBookerId(-10L, pageable);
 
@@ -143,8 +128,6 @@ public class BookingRepositoryTest {
 
     @Test
     public void testFindAllByBookerIdAndEndBefore_CorrectValues_ShouldReturnList() {
-        //loadDataToDb();
-
         Pageable pageable = PageRequest.of(0, 10);
         Page<Booking> resultPage = bookingRepository.findAllByBookerIdAndEndBefore(u1.getId(), LocalDateTime.now().plusDays(7), pageable);
 
@@ -155,8 +138,6 @@ public class BookingRepositoryTest {
 
     @Test
     public void testFindAllByBookerIdAndEndBefore_CorrectValues_ShouldReturnOnlyOneBooking() {
-        //loadDataToDb();
-
         Pageable pageable = PageRequest.of(0, 10);
         Page<Booking> resultPage = bookingRepository.findAllByBookerIdAndEndBefore(u1.getId(), LocalDateTime.now().plusDays(2).plusHours(1), pageable);
 
@@ -167,8 +148,6 @@ public class BookingRepositoryTest {
 
     @Test
     public void testFindAllByBookerIdAndStartAfter_CorrectValues_ShouldReturnList() {
-       // loadDataToDb();
-
         Pageable pageable = PageRequest.of(0, 10);
         Page<Booking> resultPage = bookingRepository.findAllByBookerIdAndStartAfter(u1.getId(), LocalDateTime.now(), pageable);
 
@@ -179,8 +158,6 @@ public class BookingRepositoryTest {
 
     @Test
     public void testFindAllByBookerIdAndStartAfter_CorrectValues_ShouldReturnOneBooking() {
-       // loadDataToDb();
-
         Pageable pageable = PageRequest.of(0, 10);
         Page<Booking> resultPage = bookingRepository.findAllByBookerIdAndStartAfter(u1.getId(), LocalDateTime.now().plusDays(1).plusHours(3), pageable);
 
@@ -191,8 +168,6 @@ public class BookingRepositoryTest {
 
     @Test
     public void testFindAllByBookerIdAndStartAfter_CorrectValues_ShouldReturnEmptyList() {
-       // loadDataToDb();
-
         Pageable pageable = PageRequest.of(0, 10);
         Page<Booking> resultPage = bookingRepository.findAllByBookerIdAndStartAfter(u1.getId(), LocalDateTime.now().plusDays(7), pageable);
 
@@ -202,7 +177,6 @@ public class BookingRepositoryTest {
 
     @Test
     public void testFindAllByBookerIdAndStartBeforeAndEndAfter_CorrectData_ShouldReturnOneBooking() {
-        //loadDataToDb();
         Pageable pageable = PageRequest.of(0, 10);
         Page<Booking> resultPage = bookingRepository.findAllByBookerIdAndStartBeforeAndEndAfter(u1.getId(), LocalDateTime.now().plusDays(2), LocalDateTime.now().plusDays(2).plusHours(1), pageable);
 
@@ -213,8 +187,6 @@ public class BookingRepositoryTest {
 
     @Test
     public void testFindAllByItemOwnerIdAndStatus_CorrectData_ShouldReturnOneBooking() {
-        //loadDataToDb();
-
         Pageable pageable = PageRequest.of(0, 10);
         Page<Booking> resultPage = bookingRepository.findAllByItemOwnerIdAndStatus(i1.getOwner().getId(), BookingStatus.WAITING, pageable);
 
@@ -225,8 +197,6 @@ public class BookingRepositoryTest {
 
     @Test
     public void testFindAllByItemOwnerIdAndEndBefore_ShouldReturnList() {
-       // loadDataToDb();
-
         Pageable pageable = PageRequest.of(0, 10);
         Page<Booking> resultPage = bookingRepository.findAllByItemOwnerIdAndEndBefore(i2.getOwner().getId(), LocalDateTime.now().plusDays(7), pageable);
 
@@ -237,7 +207,6 @@ public class BookingRepositoryTest {
 
     @Test
     public void testFindAllByItemOwnerIdAndEndBefore_ShouldReturnOnlyOne() {
-       // loadDataToDb();
 
         Pageable pageable = PageRequest.of(0, 10);
         Page<Booking> resultPage = bookingRepository.findAllByItemOwnerIdAndEndBefore(i2.getOwner().getId(), LocalDateTime.now().plusDays(2).plusHours(1), pageable);
@@ -249,7 +218,6 @@ public class BookingRepositoryTest {
 
     @Test
     public void testFindAllByItemOwnerIdAndEndBefore_ShouldReturnEmptyList() {
-        //loadDataToDb();
 
         Pageable pageable = PageRequest.of(0, 10);
         Page<Booking> resultPage = bookingRepository.findAllByItemOwnerIdAndEndBefore(i2.getOwner().getId(), LocalDateTime.now(), pageable);
@@ -260,7 +228,6 @@ public class BookingRepositoryTest {
 
     @Test
     public void testFindAllByItemOwnerIdAndStartAfter_ShouldReturnList() {
-        //loadDataToDb();
         Pageable pageable = PageRequest.of(0, 10);
         Page<Booking> resultPage = bookingRepository.findAllByItemOwnerIdAndStartAfter(i2.getOwner().getId(), LocalDateTime.now(), pageable);
 
@@ -271,7 +238,6 @@ public class BookingRepositoryTest {
 
     @Test
     public void testFindAllByItemOwnerIdAndStartAfter_ShouldReturnOnlyOne() {
-        //loadDataToDb();
         Pageable pageable = PageRequest.of(0, 10);
         Page<Booking> resultPage = bookingRepository.findAllByItemOwnerIdAndStartAfter(i2.getOwner().getId(), LocalDateTime.now().plusDays(1).plusHours(10), pageable);
 
@@ -282,7 +248,6 @@ public class BookingRepositoryTest {
 
     @Test
     public void testFindAllByItemOwnerIdAndStartBeforeAndEndAfter_ShouldReturnOnlyOne() {
-        //loadDataToDb();
         Pageable pageable = PageRequest.of(0, 10);
         Page<Booking> resultPage = bookingRepository.findAllByItemOwnerIdAndStartBeforeAndEndAfter(i2.getOwner().getId(), LocalDateTime.now().plusDays(1).plusHours(1), LocalDateTime.now(), pageable);
 
@@ -293,7 +258,6 @@ public class BookingRepositoryTest {
 
     @Test
     void findByItemId_CorrectValues_ShouldReturnList() {
-        //loadDataToDb();
         List<Booking> bookings = bookingRepository.findByItemId(i2.getId(), Sort.by(Sort.Direction.ASC, "start"));
         assertThat(bookings).hasSize(2);
         assertThat(bookings).contains(b2,b3);
@@ -301,7 +265,6 @@ public class BookingRepositoryTest {
 
     @Test
     void findByItemId_CorrectValues_ShouldReturnOnlyOne() {
-        //loadDataToDb();
         List<Booking> bookings = bookingRepository.findByItemId(i1.getId(), Sort.by(Sort.Direction.ASC, "start"));
         assertThat(bookings).hasSize(1);
         assertThat(bookings).contains(b1);
@@ -309,14 +272,12 @@ public class BookingRepositoryTest {
 
     @Test
     void existsByBookerIdAndEndBeforeAndStatus_ShouldExist() {
-        //loadDataToDb();
         Boolean exist = bookingRepository.existsByBookerIdAndEndBeforeAndStatus(u1.getId(), LocalDateTime.now().plusDays(7), BookingStatus.WAITING);
         assertThat(exist).isTrue();
     }
 
     @Test
     void existsByBookerIdAndEndBeforeAndStatus_ShouldNotExist() {
-        //loadDataToDb();
         Boolean exist = bookingRepository.existsByBookerIdAndEndBeforeAndStatus(-1L, LocalDateTime.now(), BookingStatus.WAITING);
         assertThat(exist).isFalse();
     }

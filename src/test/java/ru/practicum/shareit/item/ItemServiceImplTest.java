@@ -7,25 +7,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
-import ru.practicum.shareit.booking.Booking;
 import ru.practicum.shareit.booking.BookingService;
 import ru.practicum.shareit.booking.dto.BookingCreationDto;
 import ru.practicum.shareit.exceptions.NotAvailableException;
 import ru.practicum.shareit.exceptions.NotFoundException;
 import ru.practicum.shareit.exceptions.UserAccessException;
-import ru.practicum.shareit.item.comments.Comment;
 import ru.practicum.shareit.item.comments.CommentDto;
 import ru.practicum.shareit.item.dto.ItemCreationDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.request.ItemRequest;
-import ru.practicum.shareit.request.ItemRequestService;
 import ru.practicum.shareit.user.UserService;
 import ru.practicum.shareit.user.dto.UserCreationDto;
 import ru.practicum.shareit.user.model.User;
 
 import javax.validation.ValidationException;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
@@ -38,18 +33,13 @@ import static org.junit.jupiter.api.Assertions.*;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-
 class ItemServiceImplTest {
 
     private final ItemService itemService;
 
-    private final ItemRequestService itemRequestService;
-
     private final BookingService bookingService;
 
     private final UserService userService;
-
-    private ItemMapper mapper = new ItemMapper();
 
     private final LocalDateTime now = (LocalDateTime.now());
 
@@ -274,7 +264,7 @@ class ItemServiceImplTest {
         assertThat(items).hasSize(0);
     }
 
-   @Test
+    @Test
     void addItem() {
         ItemCreationDto testItem = ItemCreationDto.builder().userId(-99L)
                 .name("Updated").description("Updated").available(true).build();
@@ -309,8 +299,7 @@ class ItemServiceImplTest {
     void addComment_shouldReturnCorrectDto() {
         var bookings = bookingService.get(1L, user2.getId());
         System.out.println(bookings);
-        /*ItemDto itemDto = itemService.getItems(2L).get(0);
-        assertEquals(1, itemDto.getComments().size());*/
+
         var res = itemService.addComment(user2.getId(), item2.getId(), commentDto1);
         System.out.println(res);
         assertEquals(res.getText(), commentDto1.getText());
@@ -336,7 +325,7 @@ class ItemServiceImplTest {
         });
     }
 
-   @Test
+    @Test
     void addComment_invalidUser() {
         assertThrows(NoSuchElementException.class, () -> itemService.addComment(99L, 2L, commentDto1));
     }

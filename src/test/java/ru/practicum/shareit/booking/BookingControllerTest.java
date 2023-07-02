@@ -13,10 +13,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import ru.practicum.shareit.booking.dto.BookingCreationDto;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.exceptions.NotFoundException;
-
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.model.User;
-
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -80,9 +78,9 @@ public class BookingControllerTest {
                 .thenReturn(bookingResponse);
 
         mockMvc.perform(post("/bookings")
-                .header("X-Sharer-User-Id", userId)
-                .content(objectMapper.writeValueAsString(bookingDto))
-                .contentType(MediaType.APPLICATION_JSON))
+                        .header("X-Sharer-User-Id", userId)
+                        .content(objectMapper.writeValueAsString(bookingDto))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.item.id", is(bookingResponse.getItem().getId().intValue())))
                 .andExpect(jsonPath("$.booker.id", is(bookingResponse.getBooker().getId().intValue())))
@@ -96,9 +94,9 @@ public class BookingControllerTest {
         when(bookingService.create(ArgumentMatchers.any(BookingCreationDto.class), anyLong()))
                 .thenThrow(new NotFoundException("User not found."));
         mockMvc.perform(post("/bookings")
-                .header("X-Sharer-User-Id", invalidUserId)
-                .content(objectMapper.writeValueAsString(bookingDto))
-                .contentType(MediaType.APPLICATION_JSON))
+                        .header("X-Sharer-User-Id", invalidUserId)
+                        .content(objectMapper.writeValueAsString(bookingDto))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
 
@@ -110,9 +108,9 @@ public class BookingControllerTest {
                 .build();
 
         mockMvc.perform(post("/bookings")
-                .header("X-Sharer-User-Id", userId)
-                .content(objectMapper.writeValueAsString(badDto))
-                .contentType(MediaType.APPLICATION_JSON))
+                        .header("X-Sharer-User-Id", userId)
+                        .content(objectMapper.writeValueAsString(badDto))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
 
@@ -125,9 +123,9 @@ public class BookingControllerTest {
                 .build();
 
         mockMvc.perform(post("/bookings")
-                .header("X-Sharer-User-Id", userId)
-                .content(objectMapper.writeValueAsString(badDto))
-                .contentType(MediaType.APPLICATION_JSON))
+                        .header("X-Sharer-User-Id", userId)
+                        .content(objectMapper.writeValueAsString(badDto))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
 
@@ -155,8 +153,8 @@ public class BookingControllerTest {
         when(bookingService.updateStatus(anyLong(), anyLong(), anyBoolean()))
                 .thenReturn(response);
         mockMvc.perform(patch("/bookings/{bookingId}", bookingId)
-                .header("X-Sharer-User-Id", userId)
-                .param("approved", String.valueOf(true)))
+                        .header("X-Sharer-User-Id", userId)
+                        .param("approved", String.valueOf(true)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(bookingResponse.getId().intValue())))
                 .andExpect(jsonPath("$.item.id", is(bookingResponse.getItem().getId().intValue())))
@@ -172,8 +170,8 @@ public class BookingControllerTest {
         when(bookingService.updateStatus(anyLong(), anyLong(), anyBoolean()))
                 .thenThrow(new NotFoundException("User not found."));
         mockMvc.perform(patch("/bookings/{bookingId}", bookingId)
-                .header("X-Sharer-User-Id", invalidUserId)
-                .param("approved", String.valueOf(approved)))
+                        .header("X-Sharer-User-Id", invalidUserId)
+                        .param("approved", String.valueOf(approved)))
                 .andExpect(status().isNotFound());
     }
 
@@ -185,7 +183,7 @@ public class BookingControllerTest {
                 .thenReturn(bookingResponse);
 
         mockMvc.perform(get("/bookings/{bookingId}", bookingId)
-                .header("X-Sharer-User-Id", userId))
+                        .header("X-Sharer-User-Id", userId))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(bookingResponse.getId().intValue())))
                 .andExpect(jsonPath("$.item.id", is(bookingResponse.getItem().getId().intValue())))
@@ -237,10 +235,10 @@ public class BookingControllerTest {
                 .thenReturn(bookingList);
 
         mockMvc.perform(get("/bookings")
-                .header("X-Sharer-User-Id", userId)
-                .param("state", state)
-                .param("from", String.valueOf(from))
-                .param("size", String.valueOf(size)))
+                        .header("X-Sharer-User-Id", userId)
+                        .param("state", state)
+                        .param("from", String.valueOf(from))
+                        .param("size", String.valueOf(size)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].id", is(1)))
@@ -274,9 +272,9 @@ public class BookingControllerTest {
         int size = -1;
 
         mockMvc.perform(get("/bookings")
-                .header("X-Sharer-User-Id", invalidUserId)
-                .param("state", state).param("from", String.valueOf(from))
-                .param("size", String.valueOf(size)))
+                        .header("X-Sharer-User-Id", invalidUserId)
+                        .param("state", state).param("from", String.valueOf(from))
+                        .param("size", String.valueOf(size)))
                 .andExpect(status().isBadRequest());
     }
 
@@ -290,10 +288,10 @@ public class BookingControllerTest {
                 .thenThrow(new NotFoundException("User not found."));
 
         mockMvc.perform(get("/bookings")
-                .header("X-Sharer-User-Id", invalidUserId)
-                .param("state", state)
-                .param("from", String.valueOf(from))
-                .param("size", String.valueOf(size)))
+                        .header("X-Sharer-User-Id", invalidUserId)
+                        .param("state", state)
+                        .param("from", String.valueOf(from))
+                        .param("size", String.valueOf(size)))
                 .andExpect(status().isNotFound());
     }
 
@@ -318,10 +316,10 @@ public class BookingControllerTest {
         when(bookingService.getAll(anyLong(), anyString(), anyBoolean(), anyInt(), anyInt())).thenReturn(bookingList);
 
         mockMvc.perform(get("/bookings/owner")
-                .header("X-Sharer-User-Id", userId)
-                .param("state", state)
-                .param("from", String.valueOf(from))
-                .param("size", String.valueOf(size)))
+                        .header("X-Sharer-User-Id", userId)
+                        .param("state", state)
+                        .param("from", String.valueOf(from))
+                        .param("size", String.valueOf(size)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id", is(1)))
                 .andExpect(jsonPath("$[0].item.id", is(bookingResponse.getItem().getId().intValue())))
@@ -338,10 +336,10 @@ public class BookingControllerTest {
         int size = 0;
 
         mockMvc.perform(get("/bookings/owner")
-                .header("X-Sharer-User-Id", invalidUserId)
-                .param("state", state)
-                .param("from", String.valueOf(from))
-                .param("size", String.valueOf(size)))
+                        .header("X-Sharer-User-Id", invalidUserId)
+                        .param("state", state)
+                        .param("from", String.valueOf(from))
+                        .param("size", String.valueOf(size)))
                 .andExpect(status().isBadRequest());
     }
 
