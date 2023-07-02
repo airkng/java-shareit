@@ -4,12 +4,9 @@ package ru.practicum.shareit.booking;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.test.annotation.DirtiesContext;
 import ru.practicum.shareit.booking.dto.BookingCreationDto;
 import ru.practicum.shareit.booking.dto.BookingDto;
@@ -19,7 +16,6 @@ import ru.practicum.shareit.exceptions.StateNotSupportException;
 import ru.practicum.shareit.item.ItemService;
 import ru.practicum.shareit.item.dto.ItemCreationDto;
 import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.user.UserMapper;
 import ru.practicum.shareit.user.UserService;
 import ru.practicum.shareit.user.dto.UserCreationDto;
 import ru.practicum.shareit.user.model.User;
@@ -28,8 +24,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
@@ -41,7 +35,6 @@ class BookingServiceImplTest {
     private final BookingRepository bookingRepository;
     private final UserService userService;
     private final ItemService itemService;
-
 
 
     UserCreationDto userDto1 = UserCreationDto.builder().email("user1@email.com").name("user1").build();
@@ -257,7 +250,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void getAllBookingByStateRejected()  {
+    void getAllBookingByStateRejected() {
         bookingService.updateStatus(1L, 1L, false);
         List<BookingDto> testBookingStatusRejected = bookingService.getAll(2L, "REJECTED", false, 0, 10);
         assertEquals(1, testBookingStatusRejected.size());
@@ -266,16 +259,16 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void getAllBookingByStateCurrent()  {
+    void getAllBookingByStateCurrent() {
         bookingService.updateStatus(1L, 1L, true);
 
-        List<BookingDto> testBookingStatusCurrent = bookingService.getAll(2L, "CURRENT", false,0, 10);
+        List<BookingDto> testBookingStatusCurrent = bookingService.getAll(2L, "CURRENT", false, 0, 10);
         assertEquals(1, testBookingStatusCurrent.size());
         assertEquals(1L, testBookingStatusCurrent.get(0).getId());
     }
 
     @Test
-    void getAllBookingByStateAll()  {
+    void getAllBookingByStateAll() {
         List<BookingDto> testBookingStatusAll = bookingService.getAll(2L, "ALL", true, 0, 10);
         assertEquals(testBookingStatusAll.size(), 2);
         assertEquals(bookingService.getAll(1L, "ALL", false, 0, 10).size(), 2);
@@ -283,7 +276,7 @@ class BookingServiceImplTest {
 
 
     @Test
-    void getAllBookingByStatePast()  {
+    void getAllBookingByStatePast() {
         bookingService.updateStatus(2L, 2L, true);
 
         List<BookingDto> testBookingStatusPast = bookingService.getAll(2L, "PAST", true, 0, 10);
