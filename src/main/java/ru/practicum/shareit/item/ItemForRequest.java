@@ -7,6 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder(toBuilder = true)
 public class ItemForRequest {
+    //Подготовленная инфа об Item
     private Long id;
 
     private String name;

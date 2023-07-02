@@ -16,5 +16,4 @@ public class ItemRequestCreationDto {
     @NotEmpty
     private String description;
 
-   // private Timestamp created = Timestamp.valueOf(LocalDateTime.now());
 }

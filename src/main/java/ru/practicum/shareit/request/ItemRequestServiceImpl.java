@@ -35,7 +35,6 @@ public class ItemRequestServiceImpl implements ItemRequestService {
         ItemRequest item = mapper.toItemRequest(itemRequestCreationDto);
         item.setRequestor(userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("User Not found!")));
-        //item.setCreated(Timestamp.valueOf(LocalDateTime.now()));
         return mapper.toItemRequestDto(itemRequestRepository.save(item));
     }
 

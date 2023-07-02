@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    //private static Long userIdCount = 1L;
     private final UserRepositoryDb userRepository;
     private final UserMapper mapper;
 
@@ -36,9 +35,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto create(final UserCreationDto userCreationDto) {
         User user = mapper.toUser(userCreationDto);
-        /*user.setId(userIdCount);
-        userRepository.checkEmail(user.getEmail());
-        increaseUserId();*/
         return mapper.toUserDto(userRepository.save(user));
     }
 
@@ -70,7 +66,4 @@ public class UserServiceImpl implements UserService {
         return userRepository.existsById(userId);
     }
 
-    /*private static void increaseUserId() {
-        userIdCount++;
-    }*/
 }
