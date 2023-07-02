@@ -21,8 +21,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class ItemRequestDtoJsonTest {
 
     ObjectMapper mapper = new ObjectMapper()
-            .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
-            .setDateFormat(new StdDateFormat().withColonInTimeZone(true));
+            .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+            //.setDateFormat(new StdDateFormat().withColonInTimeZone(true));
 
 
     @Test
