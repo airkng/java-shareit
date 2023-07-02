@@ -21,7 +21,7 @@ public class ItemRequestDtoJsonTest {
 
     ObjectMapper mapper = new ObjectMapper()
             .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-    //.setDateFormat(new StdDateFormat().withColonInTimeZone(true));
+    //.setDateFormat(new StdDateFormat().withColonInTimeZone(true))
 
 
     @Test
