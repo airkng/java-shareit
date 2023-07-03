@@ -118,7 +118,7 @@ public class BookingServiceImplMockTest {
     void createBooking_IncorrectDateTime_shouldReturnIllegalArgumentException() {
         var input = BookingCreationDto.builder()
                 .itemId(1L)
-                .start(booking1.getStart())
+                .start(booking1.getStart().plusDays(20))
                 .end(booking1.getEnd())
                 .build();
         input.setStart(LocalDateTime.now().plusDays(20));
@@ -131,9 +131,12 @@ public class BookingServiceImplMockTest {
                 .thenReturn(booking1);
 
         assertThrows(IllegalArgumentException.class, () -> service.create(input, 1L));
-
-        var input2 = bookingCreationDto1;
-        input2.setStart(bookingCreationDto1.getStart().plusHours(2));
+        var time = LocalDateTime.now();
+        var input2 = BookingCreationDto.builder()
+                .itemId(1L)
+                .start(time)
+                .end(time)
+                .build();
         assertThrows(IllegalArgumentException.class, () -> service.create(input2, 1L));
     }
 
