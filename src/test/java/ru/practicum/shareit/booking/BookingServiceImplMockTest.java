@@ -2,7 +2,6 @@ package ru.practicum.shareit.booking;
 
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -52,9 +51,9 @@ public class BookingServiceImplMockTest {
 
     Booking booking1 = Booking.builder()
             .item(item1)
-                .booker(user2)
-                .status(BookingStatus.WAITING)
-                .start(LocalDateTime.now().minusHours(1))
+            .booker(user2)
+            .status(BookingStatus.WAITING)
+            .start(LocalDateTime.now().minusHours(1))
             .end(LocalDateTime.now().plusHours(1))
             .build();
 
@@ -66,15 +65,15 @@ public class BookingServiceImplMockTest {
 
     Booking booking2 = Booking.builder()
             .item(item2)
-                .booker(user1)
-                .start(LocalDateTime.now().minusHours(2))
+            .booker(user1)
+            .start(LocalDateTime.now().minusHours(2))
             .end(LocalDateTime.now().minusHours(1))
             .status(BookingStatus.WAITING).build();
 
     Booking booking3 = Booking.builder()
             .item(item2)
-                .booker(user1)
-                .start(LocalDateTime.now().plusHours(1))
+            .booker(user1)
+            .start(LocalDateTime.now().plusHours(1))
             .end(LocalDateTime.now().plusHours(2))
             .status(BookingStatus.WAITING).build();
 
@@ -100,7 +99,7 @@ public class BookingServiceImplMockTest {
         Mockito.when(repository.save(any(Booking.class)))
                 .thenReturn(booking1);
 
-        assertThrows(NotFoundException.class, () ->  service.create(bookingCreationDto1, 1L));
+        assertThrows(NotFoundException.class, () -> service.create(bookingCreationDto1, 1L));
     }
 
     @Test
@@ -112,7 +111,7 @@ public class BookingServiceImplMockTest {
         Mockito.when(repository.save(any(Booking.class)))
                 .thenReturn(booking1);
 
-        assertThrows(NotFoundException.class, () ->  service.create(bookingCreationDto1, 1L));
+        assertThrows(NotFoundException.class, () -> service.create(bookingCreationDto1, 1L));
     }
 
     @Test
@@ -131,11 +130,11 @@ public class BookingServiceImplMockTest {
         Mockito.when(repository.save(any(Booking.class)))
                 .thenReturn(booking1);
 
-        assertThrows(IllegalArgumentException.class, () ->  service.create(input, 1L));
+        assertThrows(IllegalArgumentException.class, () -> service.create(input, 1L));
 
         var input2 = bookingCreationDto1;
         input2.setStart(bookingCreationDto1.getStart().plusHours(2));
-        assertThrows(IllegalArgumentException.class, () ->  service.create(input2, 1L));
+        assertThrows(IllegalArgumentException.class, () -> service.create(input2, 1L));
     }
 
     @Test
@@ -149,7 +148,7 @@ public class BookingServiceImplMockTest {
         Mockito.when(repository.save(any(Booking.class)))
                 .thenReturn(booking1);
 
-        assertThrows(NotAvailableException.class, () ->  service.create(bookingCreationDto1, 2L));
+        assertThrows(NotAvailableException.class, () -> service.create(bookingCreationDto1, 2L));
     }
 
     @Test
