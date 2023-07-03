@@ -19,7 +19,13 @@ import ru.practicum.shareit.user.model.User;
 import java.util.List;
 import java.util.Optional;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
@@ -148,4 +154,5 @@ class UserServiceImplTest {
     void containsUser_NotExistUser_ShouldReturnFalse() {
         assertFalse(userService.contains(-1L));
     }
+
 }

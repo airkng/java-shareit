@@ -37,21 +37,21 @@ class BookingServiceImplTest {
     private final ItemService itemService;
 
 
-    UserCreationDto userDto1 = UserCreationDto.builder().email("user1@email.com").name("user1").build();
-    UserCreationDto userDto2 = UserCreationDto.builder().email("user2@email.com").name("user2").build();
-    User user1 = User.builder().email("user1@email.com").name("user1").id(1L).build();
-    User user2 = User.builder().email("user2@email.com").name("user2").id(2L).build();
+    private UserCreationDto userDto1 = UserCreationDto.builder().email("user1@email.com").name("user1").build();
+    private UserCreationDto userDto2 = UserCreationDto.builder().email("user2@email.com").name("user2").build();
+    private User user1 = User.builder().email("user1@email.com").name("user1").id(1L).build();
+    private User user2 = User.builder().email("user2@email.com").name("user2").id(2L).build();
 
-    ItemCreationDto itemDto1 = ItemCreationDto.builder().userId(1L).name("item1").description("desc1").available(true).build();
-    ItemCreationDto itemDto2 = ItemCreationDto.builder().userId(2L).name("item2").description("desc2").available(true).build();
-    ItemCreationDto itemDto3 = ItemCreationDto.builder().userId(2L).name("item2").description("desc2").available(false).build();
+    private ItemCreationDto itemDto1 = ItemCreationDto.builder().userId(1L).name("item1").description("desc1").available(true).build();
+    private ItemCreationDto itemDto2 = ItemCreationDto.builder().userId(2L).name("item2").description("desc2").available(true).build();
+    private ItemCreationDto itemDto3 = ItemCreationDto.builder().userId(2L).name("item2").description("desc2").available(false).build();
 
-    Item item1 = Item.builder().owner(user1).available(true).description("desc1").name("item1").id(1L).build();
-    Item item2 = Item.builder().owner(user2).available(true).description("desc2").name("item2").id(2L).build();
+    private Item item1 = Item.builder().owner(user1).available(true).description("desc1").name("item1").id(1L).build();
+    private Item item2 = Item.builder().owner(user2).available(true).description("desc2").name("item2").id(2L).build();
 
-    Booking booking1;
-    Booking booking2;
-    Booking booking3;
+    private Booking booking1;
+    private Booking booking2;
+    private Booking booking3;
 
     @BeforeEach
     public void beforeEach() {
@@ -92,7 +92,6 @@ class BookingServiceImplTest {
                 .end(LocalDateTime.now())
                 .build();
 
-
         var actual = bookingService.create(bookingEntryDto, 2L);
         assertEquals(bookingEntryDto.getStart(), actual.getStart());
         assertEquals(bookingEntryDto.getEnd(), actual.getEnd());
@@ -100,14 +99,12 @@ class BookingServiceImplTest {
         assertEquals(BookingStatus.WAITING, actual.getStatus());
 
         List<BookingDto> testBookings1 = bookingService.getAll(1L, "WAITING", true, 0, 10);
-        System.out.println("RESULT!!!!!!!!!!!!!");
-        System.out.println("RESULT!!!!!!!!!!!!!");
-        System.out.println(testBookings1);
         assertEquals(2, testBookings1.size());
-        assertEquals(4L, testBookings1.get(0).getId());
-        assertEquals(1L, testBookings1.get(1).getId());
 
-        assertTrue(testBookings1.get(0).getStart().isAfter(testBookings1.get(1).getStart()));
+        var expected = bookingService.get(4L, 1L);
+        assertEquals(expected.getId(), actual.getId());
+        assertEquals(expected.getItem(), actual.getItem());
+        assertEquals(expected.getBooker(), actual.getBooker());
 
     }
 
@@ -156,7 +153,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void approveBooking() {
+    void approveBooking_CorrectData() {
         bookingService.updateStatus(1L, 1L, true);
 
         List<BookingDto> testBookings = bookingService.getAll(1L, "CURRENT", true, 0, 10);
@@ -231,7 +228,6 @@ class BookingServiceImplTest {
         bookingService.updateStatus(2L, 2L, false);
 
         List<BookingDto> onlyOne = bookingService.getAll(2L, "REJECTED", true, 0, 10);
-        System.out.println(onlyOne);
         assertEquals(1, onlyOne.size());
         assertEquals(2L, onlyOne.get(0).getId());
         assertEquals(item2, onlyOne.get(0).getItem());
@@ -299,5 +295,6 @@ class BookingServiceImplTest {
         assertEquals(1, testBookingStatusFuture.size());
         assertEquals(3L, testBookingStatusFuture.get(0).getId());
     }
+
 }
 

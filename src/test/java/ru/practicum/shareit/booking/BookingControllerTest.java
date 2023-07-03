@@ -49,7 +49,7 @@ public class BookingControllerTest {
     private BookingService bookingService;
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     @BeforeAll
     public static void prepareTestClass() {
@@ -90,7 +90,7 @@ public class BookingControllerTest {
     }
 
     @Test
-    public void testAddBooking_InvalidUserId_ShouldReturnNotFoundStatus() throws Exception {
+    public void addBooking_InvalidUserId_ShouldReturnNotFoundStatus() throws Exception {
         when(bookingService.create(ArgumentMatchers.any(BookingCreationDto.class), anyLong()))
                 .thenThrow(new NotFoundException("User not found."));
         mockMvc.perform(post("/bookings")
@@ -101,7 +101,7 @@ public class BookingControllerTest {
     }
 
     @Test
-    public void testAddBooking_InvalidDtoNoItemId_ShouldReturnBadRequest() throws Exception {
+    public void addBooking_InvalidDtoNoItemId_ShouldReturnBadRequest() throws Exception {
         BookingCreationDto badDto = BookingCreationDto.builder()
                 .start(start)
                 .end(end)
@@ -115,7 +115,7 @@ public class BookingControllerTest {
     }
 
     @Test
-    public void testAddBooking_InvalidDtoNotCorrectStartDate_ShouldReturnBadRequest() throws Exception {
+    public void addBooking_InvalidDtoNotCorrectStartDate_ShouldReturnBadRequest() throws Exception {
         BookingCreationDto badDto = BookingCreationDto.builder()
                 .itemId(2L)
                 .start(LocalDateTime.now().minusDays(1))
@@ -130,7 +130,7 @@ public class BookingControllerTest {
     }
 
     @Test
-    public void testAddBooking_InvalidDtoNotCorrectEndDate_ShouldReturnBadRequest() throws Exception {
+    public void addBooking_InvalidDtoNotCorrectEndDate_ShouldReturnBadRequest() throws Exception {
         BookingCreationDto badDto = BookingCreationDto.builder()
                 .itemId(2L)
                 .start(start)
@@ -145,7 +145,7 @@ public class BookingControllerTest {
     }
 
     @Test
-    public void testApproveBooking_CorrectData_ShouldReturnOkAndResponseStatusApproved() throws Exception {
+    public void approveBooking_CorrectData_ShouldReturnOkAndResponseStatusApproved() throws Exception {
         Long bookingId = 1L;
         BookingDto response = bookingResponse;
         response.setStatus(BookingStatus.APPROVED);
@@ -164,7 +164,7 @@ public class BookingControllerTest {
     }
 
     @Test
-    public void testApproveBooking_InvalidUserId_ShouldReturnNotFoundStatus() throws Exception {
+    public void approveBooking_InvalidUserId_ShouldReturnNotFoundStatus() throws Exception {
         Long bookingId = 1L;
         Boolean approved = true;
         when(bookingService.updateStatus(anyLong(), anyLong(), anyBoolean()))
@@ -176,7 +176,7 @@ public class BookingControllerTest {
     }
 
     @Test
-    public void testGetBookingById_CorrectValue_ShouldReturnSameDto() throws Exception {
+    public void getBookingById_CorrectValue_ShouldReturnSameDto() throws Exception {
         Long bookingId = 1L;
 
         when(bookingService.get(anyLong(), anyLong()))
@@ -194,7 +194,7 @@ public class BookingControllerTest {
     }
 
     @Test
-    public void testGetBookingById_InvalidUserId() throws Exception {
+    public void getBookingById_InvalidUserId() throws Exception {
         Long bookingId = 1L;
         when(bookingService.get(anyLong(), anyLong()))
                 .thenThrow(new NotFoundException("User not found."));
@@ -204,7 +204,7 @@ public class BookingControllerTest {
     }
 
     @Test
-    public void testGetBookingById_InvalidItemId() throws Exception {
+    public void getBookingById_InvalidItemId() throws Exception {
         Long bookingId = 1L;
         when(bookingService.get(anyLong(), anyLong()))
                 .thenThrow(new NotFoundException("Item not found."));
@@ -214,7 +214,7 @@ public class BookingControllerTest {
     }
 
     @Test
-    public void testGetAllBookingByState_CorrectRequest_ShouldReturnListAndOkStatus() throws Exception {
+    public void getAllBookingByState_CorrectRequest_ShouldReturnListAndOkStatus() throws Exception {
         Long userId = 1L;
         String state = "WAITING";
         int from = 0;
@@ -252,7 +252,7 @@ public class BookingControllerTest {
     }
 
     @Test
-    public void testGetAllBookingByState_InvalidPageFrom_ShouldReturnBadRequestStatus() throws Exception {
+    public void getAllBookingByState_InvalidPageFrom_ShouldReturnBadRequestStatus() throws Exception {
         String state = "WAITING";
         int from = -1;
         int size = 10;
@@ -266,7 +266,7 @@ public class BookingControllerTest {
     }
 
     @Test
-    public void testGetAllBookingByState_InvalidPageSize_Should() throws Exception {
+    public void getAllBookingByState_InvalidPageSize_Should() throws Exception {
         String state = "WAITING";
         int from = 0;
         int size = -1;
@@ -279,7 +279,7 @@ public class BookingControllerTest {
     }
 
     @Test
-    public void testGetAllBookingByState_InvalidUserId_shouldReturnNoFoundStatus() throws Exception {
+    public void getAllBookingByState_InvalidUserId_shouldReturnNoFoundStatus() throws Exception {
         String state = "WAITING";
         int from = 0;
         int size = 10;
@@ -296,7 +296,7 @@ public class BookingControllerTest {
     }
 
     @Test
-    public void testGetAllItemsBookings_CorrectValues_ShouldReturnListAndOkStatus() throws Exception {
+    public void getAllItemsBookings_CorrectValues_ShouldReturnListAndOkStatus() throws Exception {
         Long userId = 1L;
         String state = "ALL";
         int from = 0;
@@ -330,7 +330,7 @@ public class BookingControllerTest {
     }
 
     @Test
-    public void testGetAllItemsBookings_InvalidPageFrom_ShouldReturnBadRequest() throws Exception {
+    public void getAllItemsBookings_InvalidPageFrom_ShouldReturnBadRequest() throws Exception {
         String state = "ALL";
         int from = -1;
         int size = 0;
@@ -344,7 +344,7 @@ public class BookingControllerTest {
     }
 
     @Test
-    public void testGetAllItemsBookings_InvalidPageSizeAndFrom_ShouldReturnBadRequest() throws Exception {
+    public void getAllItemsBookings_InvalidPageSizeAndFrom_ShouldReturnBadRequest() throws Exception {
         Long invalidUserId = 1L;
         String state = "ALL";
         int from = -7;

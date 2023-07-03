@@ -2,12 +2,14 @@ package ru.practicum.shareit.booking;
 
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.test.context.ActiveProfiles;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.model.User;
 
@@ -17,7 +19,8 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@AutoConfigureTestDatabase
+@ActiveProfiles("test")
 public class BookingRepositoryTest {
     @Autowired
     private TestEntityManager entityManager;
@@ -178,7 +181,7 @@ public class BookingRepositoryTest {
     @Test
     public void testFindAllByBookerIdAndStartBeforeAndEndAfter_CorrectData_ShouldReturnOneBooking() {
         Pageable pageable = PageRequest.of(0, 10);
-        Page<Booking> resultPage = bookingRepository.findAllByBookerIdAndStartBeforeAndEndAfter(u1.getId(), LocalDateTime.now().plusDays(2), LocalDateTime.now().plusDays(2).plusHours(1), pageable);
+        Page<Booking> resultPage = bookingRepository.findAllByBookerIdAndStartBeforeAndEndAfter(u1.getId(), LocalDateTime.now().plusDays(2), LocalDateTime.now().plusDays(2).plusHours(4), pageable);
 
         assertThat(resultPage).isNotEmpty();
         assertThat(resultPage.getContent()).hasSize(1);

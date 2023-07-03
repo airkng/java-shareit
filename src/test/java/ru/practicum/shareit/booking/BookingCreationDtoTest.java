@@ -12,14 +12,13 @@ import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @JsonTest
-
 public class BookingCreationDtoTest {
-    ObjectMapper objectMapper = new ObjectMapper()
+    private ObjectMapper objectMapper = new ObjectMapper()
             .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 
 
     @Test
-    public void testSerializeToJson() throws Exception {
+    public void serializeToJson() throws Exception {
         objectMapper.registerModule(new JavaTimeModule());
         BookingCreationDto bookingEntryDto = BookingCreationDto.builder()
                 .start(LocalDateTime.of(2020, 1, 1, 12, 3))
@@ -33,7 +32,7 @@ public class BookingCreationDtoTest {
     }
 
     @Test
-    public void testDeserializeFromJson() throws Exception {
+    public void deserializeFromJson() throws Exception {
         objectMapper.registerModule(new JavaTimeModule());
         String json = "{\"start\":\"2023-05-01T10:00:00\",\"end\":\"2023-05-01T12:00:00\",\"itemId\":2}";
 
