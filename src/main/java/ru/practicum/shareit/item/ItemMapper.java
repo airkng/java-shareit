@@ -7,11 +7,8 @@ import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.request.ItemRequest;
 import ru.practicum.shareit.user.model.User;
 
-import java.util.HashMap;
-
 @Component
 public class ItemMapper {
-    private static HashMap<Long, ItemRequest> requests = new HashMap<>();
 
     public ItemDto toItemDto(final Item item) {
         return ItemDto.builder()
@@ -32,7 +29,18 @@ public class ItemMapper {
                 .name(itemCreationDto.getName())
                 .description(itemCreationDto.getDescription())
                 .available(itemCreationDto.getAvailable())
-                .request(itemCreationDto.getRequestId() != null ? requests.get(itemCreationDto.getRequestId()) : null)
+                //нашаманил
+                .request(itemCreationDto.getRequestId() != null ? ItemRequest.builder().requestId(itemCreationDto.getRequestId()).build() : null)
+                .build();
+    }
+
+    public ItemForRequest toItemForRequest(Item item) {
+        return ItemForRequest.builder()
+                .id(item.getId())
+                .available(item.getAvailable())
+                .requestId(item.getRequest().getRequestId() != null ? item.getRequest().getRequestId() : null)
+                .name(item.getName())
+                .description(item.getDescription())
                 .build();
     }
 }
