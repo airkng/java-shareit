@@ -1,4 +1,4 @@
-package ru.practicum.shareIt.request;
+package ru.practicum.shareit.request;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -11,9 +11,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import ru.practicum.shareit.request.ItemRequestController;
-import ru.practicum.shareit.request.ItemRequestDto;
-import ru.practicum.shareit.request.RequestClient;
 
 import java.util.List;
 
